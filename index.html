@@ -12,7 +12,10 @@
 <body>
 <header><h1>🏈 DraftIQ <span class="m" id="status">Loading…</span></h1><nav id="nav"></nav></header>
 <main id="app"><div class="card">Loading DraftIQ…</div></main>
-<script src="players.js?v=2"></script>
-<script src="app.js?v=2"></script>
+<script src="players.js?v=3"></script>
+<script>
+try{const k='draftiq_v6',x=JSON.parse(localStorage.getItem(k)||'null');if(x){x.owners=x.owners||{};if(!Object.prototype.hasOwnProperty.call(x.owners,'29'))x.owners[29]='Traded Away';localStorage.setItem(k,JSON.stringify(x));}}catch(e){}
+</script>
+<script src="app.js?v=3"></script>
 </body>
 </html>
