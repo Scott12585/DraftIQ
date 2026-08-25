@@ -17,5 +17,26 @@
 try{const k='draftiq_v6',x=JSON.parse(localStorage.getItem(k)||'null');if(x){x.owners=x.owners||{};if(!Object.prototype.hasOwnProperty.call(x.owners,'29'))x.owners[29]='Traded Away';localStorage.setItem(k,JSON.stringify(x));}}catch(e){}
 </script>
 <script src="app.js?v=4"></script>
+<script>
+(function(){
+  const originalBoardView = window.boardView || boardView;
+  window.undoLastPick = function(){
+    if(!s.draft || !s.draft.length) return;
+    const last = s.draft.slice().sort((a,b)=>b.pick-a.pick)[0];
+    s.draft = s.draft.filter(d => !(d.pick===last.pick && keyName(d.name)===keyName(last.name)));
+    s.pick = last.pick;
+    save();
+    view('board');
+  };
+  window.boardView = function(){
+    const html = originalBoardView();
+    const label = (s.draft && s.draft.length)
+      ? `↩ Undo Last Pick`
+      : `↩ Undo Last Pick`;
+    const disabled = (s.draft && s.draft.length) ? '' : ' disabled';
+    return html.replace('<div class="trade">', `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button onclick="undoLastPick()"${disabled}>${label}</button></div><div class="trade">`);
+  };
+})();
+</script>
 </body>
 </html>
