@@ -30,12 +30,50 @@ try{const k='draftiq_v6',x=JSON.parse(localStorage.getItem(k)||'null');if(x){x.o
   };
   window.boardView = function(){
     const html = originalBoardView();
-    const label = (s.draft && s.draft.length)
-      ? `↩ Undo Last Pick`
-      : `↩ Undo Last Pick`;
     const disabled = (s.draft && s.draft.length) ? '' : ' disabled';
-    return html.replace('<div class="trade">', `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button onclick="undoLastPick()"${disabled}>${label}</button></div><div class="trade">`);
+    return html.replace('<div class="trade">', `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button onclick="undoLastPick()"${disabled}>↩ Undo Last Pick</button></div><div class="trade">`);
   };
+})();
+</script>
+<script>
+(function(){
+  function rosterFor(team){
+    const keep=(s.teams.find(t=>t[0]===team)||[]).slice(1).filter(Boolean).map(n=>({name:n,pos:player(n)?.[1]||''}));
+    const drafted=(s.draft||[]).filter(d=>d.team===team).map(d=>({name:d.name,pos:d.pos||player(d.name)?.[1]||''}));
+    return keep.concat(drafted);
+  }
+  function needMultiplier(team,pos){
+    const r=rosterFor(team), n=r.filter(x=>x.pos===pos).length;
+    if(pos==='QB') return n===0?1.35:n===1?1.12:n===2?.72:.48;
+    if(pos==='RB') return n<2?1.28:n<4?1.08:.82;
+    if(pos==='WR') return n<3?1.32:n<5?1.10:.84;
+    if(pos==='TE') return n===0?1.12:n===1?.72:.46;
+    return 1;
+  }
+  window.survival = survival = function(p){
+    const nx=nextMine();
+    if(!nx || nx<=s.pick+1) return 100;
+    const pool=available().slice().sort((a,b)=>a[2]-b[2]);
+    const idx=Math.max(0,pool.findIndex(x=>keyName(x[0])===keyName(p[0])));
+    let survive=1;
+    for(let pick=s.pick+1;pick<nx;pick++){
+      const tm=owner(pick);
+      if(!tm || tm==='Scott' || tm==='Traded Away') continue;
+      const rankPressure=Math.max(.015,Math.min(.40,.30*Math.exp(-idx/19)));
+      const need=needMultiplier(tm,p[1]);
+      const roundPressure=Math.max(.78,1-(round(pick)-1)*.018);
+      const hazard=Math.max(.01,Math.min(.55,rankPressure*need*roundPressure));
+      survive*=1-hazard;
+    }
+    return Math.max(3,Math.min(98,Math.round(survive*100)));
+  };
+  const oldDraftView = window.draftView || draftView;
+  window.draftView = draftView = function(){
+    let html=oldDraftView();
+    html=html.replace('<h3>🔮 Around Next Pick</h3>','<h3>🔮 Around Next Pick</h3><div class="notice">Lightweight estimate using player rank, your actual next pick, and each intervening team’s keeper/drafted positional needs.</div>');
+    return html;
+  };
+  view('draft');
 })();
 </script>
 </body>
