@@ -1,6 +1,5 @@
-// Keep draft-day Undo actions on the Command Center instead of navigating to Draft Board.
+// Keep draft-day Undo actions on the Command Center without reopening Live Pick search.
 (function(){
-const originalUndo=window.undoLastPick;
 window.undoLastPick=function(){
   if(!s.draft.length)return;
   const last=s.draft.slice().sort((a,b)=>b.pick-a.pick)[0];
@@ -8,6 +7,11 @@ window.undoLastPick=function(){
   s.pick=last.pick;
   save();
   view('command');
-  setTimeout(()=>document.getElementById('livePickSearch')?.focus(),0);
+  setTimeout(()=>{
+    const input=document.getElementById('livePickSearch');
+    const results=document.getElementById('livePickResults');
+    if(input)input.blur();
+    if(results){results.innerHTML='';results.style.display='none';}
+  },0);
 };
 })();
