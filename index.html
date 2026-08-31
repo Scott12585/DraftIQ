@@ -3,39 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#15171a">
+<meta name="theme-color" content="#f2f3f4">
 <title>Red Zone DraftIQ</title>
 <link rel="stylesheet" href="command-ui.css?v=2">
 <link rel="stylesheet" href="team-needs.css?v=2">
 <link rel="stylesheet" href="live-pick-entry.css?v=2">
+<link rel="stylesheet" href="command-theme-v2.css?v=1">
 <style>
-.cc-best-controls{margin-left:auto;margin-right:8px;display:inline-flex;align-items:center}
-.cc-best-controls select{font-size:9px;padding:1px 18px 1px 4px;height:20px;border:1px solid #d6d9dd;background:#f7f8fa;color:#b71920;border-radius:4px;cursor:pointer}
 .cc-best-photo{width:34px!important;height:34px!important;min-width:34px;border-radius:50%;object-fit:cover;background:#e7e9ec}
-/* Slight readability increase without changing dashboard proportions. */
 .command-active .panel-title h3{font-size:12px}
 .command-active .player-line .name b{font-size:11px}
 .command-active .player-line .name small{font-size:9px;line-height:1.2}
 .command-active .roster-table th,.command-active .roster-table td{font-size:10px}
 .command-active .board-compact td{font-size:10px}
-/* Brighter broadcast-style Command Center: charcoal shell, light content cards, red accents. */
-body.command-active{background:#17191c;color:#f5f6f7}
-body.command-active main{background:linear-gradient(180deg,#202328,#17191c)}
-body.command-active main:before{color:#fff}
-body.command-active main:after{color:#c8ccd1}
-.command-active .lpe-wrap{background:linear-gradient(180deg,#f8f9fa,#e9ecef);border-color:#d5d9de;border-left-color:#d51e27;color:#17191c;box-shadow:0 5px 16px rgba(0,0,0,.18)}
-.command-active .lpe-clock strong{color:#17191c}.command-active .lpe-search-wrap input{background:#fff;color:#17191c;border-color:#c9cdd2}.command-active .lpe-recent-label{color:#c7cbd0}.command-active .lpe-chip{background:#292c31;border-color:#44484e;color:#f4f5f6}
-.command-active .cc-stat{background:linear-gradient(180deg,#fafafa,#e9ebee);border-color:#d1d5da;color:#17191c;box-shadow:0 4px 12px rgba(0,0,0,.14)}
-.command-active .cc-stat-label,.command-active .cc-stat-sub{color:#565c63}.command-active .cc-stat-value{color:#111316}.command-active .cc-stat-icon{background:#fff;border-width:2px}
-.command-active .cockpit-panel{background:linear-gradient(180deg,#fbfbfc,#eef0f2);border-color:#d2d6db;color:#16181b;box-shadow:0 6px 16px rgba(0,0,0,.16)}
-.command-active .panel-title{border-bottom-color:#d4d7db}.command-active .panel-title h3{color:#16181b}.command-active .panel-title button{color:#c91d25}
-.command-active .player-line{border-bottom-color:#d9dce0}.command-active .player-line .name b{color:#15171a}.command-active .player-line .name small,.command-active .m{color:#686e75}.command-active .player-line .value{color:#187c32}
-.command-active .avatar-fallback{background:#dfe2e6;color:#42474d}
-.command-active .recommend-photo,.command-active .player-cell img,.command-active .player-line img{background:#e2e5e8;border-color:#c9cdd2}
-.command-active .recommend-info h2{color:#111316}.command-active .recommend-info .meta{color:#5e646b}.command-active .recommend-metrics{border-color:#d4d7db}.command-active .recommend-metrics div{border-right-color:#d4d7db}.command-active .recommend-metrics span{color:#6b7178}.command-active .recommend-metrics b{color:#15171a}
-.command-active .recommend-score{background:#e8f4ea;border-color:#94c49e}.command-active .recommend-score strong{color:#197c32}.command-active .recommend-score small{color:#4d6652}
-.command-active table{background:#f8f9fa;border-color:#d5d8dc;color:#17191c}.command-active th{background:#e3e6e9;color:#555b62}.command-active th,.command-active td{border-bottom-color:#d7dade}.command-active .mine{background:#f7e4e5!important}.command-active .active-pick{outline-color:#d51e27}.command-active .clock{color:#c91d25}
-.command-active .cc-footer{color:#d2d5d9;border-top-color:#3b3f44}
 </style>
 </head>
 <body>
@@ -58,8 +38,8 @@ body.command-active main:after{color:#c8ccd1}
 <script src="safe-targets.js?v=1"></script>
 <script src="live-pick-entry.js?v=2"></script>
 <script src="command-undo.js?v=1"></script>
-<script src="best-available-filter.js?v=3"></script>
 <script src="command-cleanup.js?v=1"></script>
+<script src="command-layout-v2.js?v=1"></script>
 <script src="sync.js?v=1"></script>
 </body>
 </html>
