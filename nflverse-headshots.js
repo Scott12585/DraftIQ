@@ -23,7 +23,12 @@ function nflverseAvatar(name,cls=''){
  const photo=photos.get(k(name));
  if(!photo)return fallbackAvatar?fallbackAvatar(name,cls):`<span class="avatar-fallback ${cls}">${initials(name)}</span>`;
  const fallback=fallbackAvatar?encodeURIComponent(fallbackAvatar(name,cls)):'';
- return `<img class="${cls}" src="${photo}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-fallback-html="${fallback}" onerror="if(this.dataset.fallbackHtml){this.outerHTML=decodeURIComponent(this.dataset.fallbackHtml)}else{this.outerHTML='<span class=&quot;avatar-fallback ${cls}&quot;>${initials(name)}</span>'}">`;
+ return `<img class="${cls}" src="${photo}" alt="" loading="lazy" decoding="async" data-fallback-html="${fallback}" onerror="if(this.dataset.fallbackHtml){this.outerHTML=decodeURIComponent(this.dataset.fallbackHtml)}else{this.outerHTML='<span class=&quot;avatar-fallback ${cls}&quot;>${initials(name)}</span>'}">`;
+}
+function refreshCurrentView(){
+ if(typeof view!=='function')return;
+ const active=document.body.classList.contains('command-active')?'command':null;
+ if(active)view(active);
 }
 async function load(){
  try{
@@ -37,7 +42,7 @@ async function load(){
   for(let i=1;i<rows.length;i++){const n=rows[i][nameI],p=rows[i][headI];if(n&&p&&/^https?:\/\//.test(p))photos.set(k(n),p);}
   window.DraftIQAvatar=nflverseAvatar;
   window.DraftIQHeadshotSource='nflverse/GSIS';
-  if(document.body.classList.contains('command-active')&&typeof view==='function')view('command');
+  refreshCurrentView();
  }catch(e){console.warn('DraftIQ nflverse headshots unavailable; using fallback.',e);}
 }
 load();
