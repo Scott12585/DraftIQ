@@ -10,8 +10,23 @@
 <link rel="stylesheet" href="live-pick-entry.css?v=1">
 <style>
 .cc-best-controls{margin-left:auto;margin-right:8px;display:inline-flex;align-items:center}
-.cc-best-controls select{font-size:9px;padding:1px 18px 1px 4px;height:20px;border:0;background:#111315;color:#ff3d44;border-radius:3px;cursor:pointer}
+.cc-best-controls select{font-size:10px;padding:1px 18px 1px 4px;height:21px;border:0;background:#111315;color:#ff3d44;border-radius:3px;cursor:pointer}
 .cc-best-photo{width:34px!important;height:34px!important;min-width:34px;border-radius:50%;object-fit:cover;background:#1a1d20}
+/* Command Center readability + reclaimed toolbar space */
+.cc-shell.cc-no-toolbar{grid-template-rows:92px minmax(0,1fr) 28px}
+.cc-shell.cc-no-toolbar .cc-stats{grid-row:auto}
+.command-active .panel-title h3{font-size:13px;letter-spacing:.25px}
+.command-active .panel-title button{font-size:10px}
+.command-active .player-line .name b{font-size:12px}
+.command-active .player-line .name small{font-size:10px;line-height:1.25}
+.command-active .player-line .value{font-size:12px}
+.command-active .roster-table th,.command-active .roster-table td{font-size:10px}
+.command-active .cc-stat-label{font-size:11px}
+.command-active .cc-stat-sub{font-size:11px}
+.command-active .recommend-info .meta{font-size:12px}
+.command-active .recommend-metrics span{font-size:9px}
+.command-active .board-compact td{font-size:11px}
+.command-active .board-compact th{font-size:10px}
 </style>
 </head>
 <body>
@@ -35,6 +50,7 @@
 <script src="live-pick-entry.js?v=1"></script>
 <script src="command-undo.js?v=1"></script>
 <script src="best-available-filter.js?v=2"></script>
+<script src="command-cleanup.js?v=1"></script>
 <script src="sync.js?v=1"></script>
 </body>
 </html>
