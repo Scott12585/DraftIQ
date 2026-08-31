@@ -6,7 +6,7 @@ function findPanel(title){
  return Array.from(document.querySelectorAll('.cockpit-panel')).find(p=>p.querySelector('.panel-title h3')?.textContent.includes(title));
 }
 function avatar(name){
- return window.DraftIQAvatar?window.DraftIQAvatar(name,'cc-rank-photo'):`<span class="avatar-fallback cc-rank-photo">${String(name||'?').split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase()}</span>`;
+ return window.DraftIQTeamLogo?window.DraftIQTeamLogo(name,'cc-rank-photo'):window.DraftIQAvatar?window.DraftIQAvatar(name,'cc-rank-photo'):`<span class="avatar-fallback cc-rank-photo">${String(name||'?').split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase()}</span>`;
 }
 function metaLine(name,pos){return window.DraftIQNFLLine?window.DraftIQNFLLine(name,pos):pos;}
 function targetBadge(name){return typeof targetLevel==='function'&&targetLevel(name)>0?'<span class="cc-target-badge">TARGET</span>':'';}
