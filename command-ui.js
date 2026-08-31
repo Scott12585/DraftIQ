@@ -4,8 +4,8 @@ const TEAM_NAMES={ARI:'Arizona Cardinals',ATL:'Atlanta Falcons',BAL:'Baltimore R
 const BYE={KC:5,CAR:5,CIN:6,DET:6,MIA:6,MIN:6,BUF:7,JAX:7,LAC:7,WAS:7,NYG:8,HOU:8,NO:8,SF:8,PIT:9,TEN:9,CHI:10,DEN:10,PHI:10,TB:10,SEA:11,LAR:11,ATL:11,NE:11,CLE:11,GB:11,BAL:13,NYJ:13,IND:13,LV:13,DAL:14,ARI:14};
 let sleeper={};let metadataReady=false;let currentPage='command';
 function initials(n){return String(n||'?').split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase()}
-function meta(name){const m=sleeper[keyName(name)]||{};const team=m.team||'';return {team,teamName:TEAM_NAMES[team]||team||'Team TBD',bye:BYE[team]||'—',photo:m.player_id?`https://sleepercdn.com/content/nfl/players/thumb/${m.player_id}.jpg`:''}}
-function avatar(name,cls=''){const m=meta(name);return m.photo?`<img class="${cls}" src="${m.photo}" alt="" onerror="this.outerHTML='<span class=&quot;avatar-fallback ${cls}&quot;>${initials(name)}</span>'">`:`<span class="avatar-fallback ${cls}">${initials(name)}</span>`}
+function meta(name){const m=sleeper[keyName(name)]||{};const team=m.team||'';return {team,teamName:TEAM_NAMES[team]||team||'Team TBD',bye:BYE[team]||'—',photo:m.player_id?`https://sleepercdn.com/content/nfl/players/${m.player_id}.jpg`:''}}
+function avatar(name,cls=''){const m=meta(name);return m.photo?`<img class="${cls}" src="${m.photo}" alt="" loading="lazy" decoding="async" onerror="this.outerHTML='<span class=&quot;avatar-fallback ${cls}&quot;>${initials(name)}</span>'">`:`<span class="avatar-fallback ${cls}">${initials(name)}</span>`}
 function nflLine(name,pos){const m=meta(name);return `<span class="pos-${pos}">${pos||'—'}</span> • ${m.team||'TBD'} • Bye ${m.bye}`}
 window.DraftIQAvatar=avatar;window.DraftIQNFLLine=nflLine;window.DraftIQMeta=meta;
 function fantasyTeam(ownerName){return OWNER_TEAMS[ownerName]||ownerName}
