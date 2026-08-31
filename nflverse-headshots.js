@@ -31,7 +31,8 @@ async function load(){
   const rows=parseCSV(await res.text());if(!rows.length)return;
   const h=rows[0].map(x=>x.trim());
   const nameI=h.indexOf('display_name');
-  const headI=h.indexOf('headshot');>=0?h.indexOf('headshot'):h.indexOf('headshot_url');
+  const directHead=h.indexOf('headshot');
+  const headI=directHead>=0?directHead:h.indexOf('headshot_url');
   if(nameI<0||headI<0)return;
   for(let i=1;i<rows.length;i++){const n=rows[i][nameI],p=rows[i][headI];if(n&&p&&/^https?:\/\//.test(p))photos.set(k(n),p);}
   window.DraftIQAvatar=nflverseAvatar;
