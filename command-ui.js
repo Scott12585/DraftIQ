@@ -7,6 +7,7 @@ function initials(n){return String(n||'?').split(/\s+/).map(x=>x[0]).join('').sl
 function meta(name){const m=sleeper[keyName(name)]||{};const team=m.team||'';return {team,teamName:TEAM_NAMES[team]||team||'Team TBD',bye:BYE[team]||'—',photo:m.player_id?`https://sleepercdn.com/content/nfl/players/thumb/${m.player_id}.jpg`:''}}
 function avatar(name,cls=''){const m=meta(name);return m.photo?`<img class="${cls}" src="${m.photo}" alt="" onerror="this.outerHTML='<span class=&quot;avatar-fallback ${cls}&quot;>${initials(name)}</span>'">`:`<span class="avatar-fallback ${cls}">${initials(name)}</span>`}
 function nflLine(name,pos){const m=meta(name);return `<span class="pos-${pos}">${pos||'—'}</span> • ${m.team||'TBD'} • Bye ${m.bye}`}
+window.DraftIQAvatar=avatar;window.DraftIQNFLLine=nflLine;window.DraftIQMeta=meta;
 function fantasyTeam(ownerName){return OWNER_TEAMS[ownerName]||ownerName}
 function rosterLimit(){return 16}
 function statIcon(type){return type==='pick'?'⚑':type==='next'?'◷':type==='until'?'▷':'♙'}
