@@ -1,67 +1,12 @@
 (function(){
 function q(id){return document.getElementById(id)}
-function recentPicks(){return s.draft.slice().sort((a,b)=>b.pick-a.pick).slice(0,6)}
-function availableMatches(term){
- const t=String(term||'').trim().toLowerCase();
- if(!t)return available().slice(0,8);
- return available().filter(p=>p[0].toLowerCase().includes(t)).slice(0,8);
-}
-function hideMatches(){
- const box=q('livePickResults');
- if(!box)return;
- box.innerHTML='';
- box.style.display='none';
-}
-function recordLivePick(name){
- const p=player(name);if(!p||round(s.pick)>12)return;
- s.draft=s.draft.filter(d=>d.pick!==s.pick);
- s.draft.push({pick:s.pick,team:owner(s.pick),name:p[0],pos:p[1]});
- s.pick=Math.min(120,s.pick+1);
- save();
- view('command');
-}
+function recentPicks(){return s.draft.slice().sort((a,b)=>b.pick-a.pick).slice(0,10)}
+function availableMatches(term){const t=String(term||'').trim().toLowerCase();if(!t)return available().slice(0,8);return available().filter(p=>p[0].toLowerCase().includes(t)).slice(0,8);}
+function hideMatches(){const box=q('livePickResults');if(!box)return;box.innerHTML='';box.style.display='none';}
+function recordLivePick(name){const p=player(name);if(!p||round(s.pick)>12)return;s.draft=s.draft.filter(d=>d.pick!==s.pick);s.draft.push({pick:s.pick,team:owner(s.pick),name:p[0],pos:p[1]});s.pick=Math.min(120,s.pick+1);save();view('command');}
 window.recordLivePick=recordLivePick;
-function renderMatches(term){
- const box=q('livePickResults');if(!box)return;
- const rows=availableMatches(term);
- box.innerHTML=rows.map(p=>`<button class="lpe-result" data-player="${encodeURIComponent(p[0])}"><span><b>${E(p[0])}</b><small>${p[1]} • Rank ${p[2]} • ${p[3].toFixed(1)} pts</small></span><strong>SELECT</strong></button>`).join('')||'<div class="lpe-empty">No available players match.</div>';
- box.style.display=rows.length?'grid':'block';
-}
-function liveEntryHTML(){
- const recent=recentPicks();
- return `<section class="lpe-wrap"><div class="lpe-main"><div class="lpe-clock"><span>NOW PICKING</span><strong>${fmtPick(s.pick)} • ${E(owner(s.pick))}</strong></div><div class="lpe-search-wrap"><input id="livePickSearch" autocomplete="off" placeholder="Record pick — type player name..."><div id="livePickResults" class="lpe-results" style="display:none"></div></div><button class="lpe-undo" onclick="undoLastPick()" ${s.draft.length?'':'disabled'}>↶ Undo</button></div><div class="lpe-recent"><span class="lpe-recent-label">RECENT PICKS</span>${recent.length?recent.map(d=>`<span class="lpe-chip"><b>${fmtPick(d.pick)}</b> ${E(d.team)} — ${E(d.name)}</span>`).join(''):'<span class="m">No picks recorded yet.</span>'}</div></section>`;
-}
-function mountLiveEntry(){
- const shell=document.querySelector('.cc-shell');if(!shell||document.querySelector('.lpe-wrap'))return;
- shell.insertAdjacentHTML('afterbegin',liveEntryHTML());
- const input=q('livePickSearch');
- if(input){
-   input.addEventListener('input',e=>renderMatches(e.target.value));
-   input.addEventListener('focus',e=>renderMatches(e.target.value));
-   input.addEventListener('keydown',e=>{
-     if(e.key==='Escape'){
-       hideMatches();
-       input.blur();
-       return;
-     }
-     if(e.key==='Enter'){
-       const first=q('livePickResults')?.querySelector('.lpe-result');
-       if(first){e.preventDefault();recordLivePick(decodeURIComponent(first.dataset.player||''));}
-     }
-   });
- }
- document.querySelector('.lpe-wrap')?.addEventListener('click',e=>{
-   const btn=e.target.closest('.lpe-result');if(!btn)return;
-   recordLivePick(decodeURIComponent(btn.dataset.player||''));
- });
-}
-
-document.addEventListener('pointerdown',e=>{
- const wrap=e.target.closest?.('.lpe-search-wrap');
- if(!wrap)hideMatches();
-});
-
-const baseView=view;
-view=function(v){baseView(v);if(v==='command')setTimeout(mountLiveEntry,0)};
-if(document.querySelector('.cc-shell'))mountLiveEntry();
+function renderMatches(term){const box=q('livePickResults');if(!box)return;const rows=availableMatches(term);box.innerHTML=rows.map(p=>`<button class="lpe-result" data-player="${encodeURIComponent(p[0])}"><span><b>${E(p[0])}</b><small>${p[1]} • Rank ${p[2]} • ${p[3].toFixed(1)} pts</small></span><strong>SELECT</strong></button>`).join('')||'<div class="lpe-empty">No available players match.</div>';box.style.display=rows.length?'grid':'block';}
+function liveEntryHTML(){const recent=recentPicks();return `<section class="lpe-wrap"><div class="lpe-main"><div class="lpe-clock"><span>NOW PICKING</span><strong>${fmtPick(s.pick)} • ${E(owner(s.pick))}</strong></div><div class="lpe-search-wrap"><input id="livePickSearch" autocomplete="off" placeholder="Record pick — type player name..."><div id="livePickResults" class="lpe-results" style="display:none"></div></div><button class="lpe-undo" onclick="undoLastPick()" ${s.draft.length?'':'disabled'}>↶ Undo</button></div><div class="lpe-recent"><span class="lpe-recent-label">RECENT PICKS</span>${recent.length?recent.map(d=>`<span class="lpe-chip"><b>${fmtPick(d.pick)}</b> ${E(d.team)} — ${E(d.name)}</span>`).join(''):'<span class="m">No picks recorded yet.</span>'}<button class="lpe-board-link" onclick="view('board')">Full Draft Board →</button></div></section>`;}
+function mountLiveEntry(){const shell=document.querySelector('.cc-shell');if(!shell||document.querySelector('.lpe-wrap'))return;shell.insertAdjacentHTML('afterbegin',liveEntryHTML());const input=q('livePickSearch');if(input){input.addEventListener('input',e=>renderMatches(e.target.value));input.addEventListener('focus',e=>renderMatches(e.target.value));input.addEventListener('keydown',e=>{if(e.key==='Escape'){hideMatches();input.blur();return}if(e.key==='Enter'){const first=q('livePickResults')?.querySelector('.lpe-result');if(first){e.preventDefault();recordLivePick(decodeURIComponent(first.dataset.player||''));}}});}document.querySelector('.lpe-wrap')?.addEventListener('click',e=>{const btn=e.target.closest('.lpe-result');if(!btn)return;recordLivePick(decodeURIComponent(btn.dataset.player||''));});}
+document.addEventListener('pointerdown',e=>{const wrap=e.target.closest?.('.lpe-search-wrap');if(!wrap)hideMatches();});const baseView=view;view=function(v){baseView(v);if(v==='command')setTimeout(mountLiveEntry,0)};if(document.querySelector('.cc-shell'))mountLiveEntry();
 })();
